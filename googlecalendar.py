@@ -1,6 +1,7 @@
 from __future__ import print_function
 import httplib2
 import os
+import pickle
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
@@ -14,6 +15,10 @@ APPLICATION_NAME = 'Google Calendar API Python Quickstart'
 
 
 def get_credentials():
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            credentials = pickle.load(token)
+            return credentials
     calendarpath = os.environ['CALENDARPATH'] if 'CALENDARPATH' in os.environ else '.'
     credential_path = os.path.join('%s/calendar-python-quickstart.json' % calendarpath)
     store = Storage(credential_path)
